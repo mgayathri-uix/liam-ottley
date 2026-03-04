@@ -1,0 +1,345 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>AAA Accelerator — Build an AI Agency That Prints</title><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{--bk:#07050F;--sf:#0D0A1C;--s2:#120F25;--vio:#7C3AED;--vio2:#9D65F5;--vio-p:rgba(124,58,237,.1);--vio-b:rgba(124,58,237,.25);--lime:#C8FF00;--lime-p:rgba(200,255,0,.08);--lime-b:rgba(200,255,0,.2);--wh:#F0EDF8;--tx:#6E6890;--mu:#2A2548;--rl:#17132E}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bk);color:var(--wh);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+
+/* subtle grid bg */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--rl) 1px,transparent 1px),linear-gradient(90deg,var(--rl) 1px,transparent 1px);background-size:60px 60px;opacity:.35;pointer-events:none;z-index:0}
+
+/* top strip */
+.ts{background:var(--lime);padding:9px 52px;display:flex;align-items:center;justify-content:center;gap:24px}
+.ts-t{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#07050F}
+.ts-sep{color:rgba(7,5,15,.35)}
+
+/* nav */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 52px;background:rgba(7,5,15,.97);border-bottom:1px solid var(--rl);backdrop-filter:blur(12px)}
+.logo{font-size:18px;font-weight:700;color:var(--wh);letter-spacing:-.02em}
+.logo span{color:var(--lime)}
+.nav-c{display:flex;align-items:center;gap:12px}
+.cohort-pill{display:flex;align-items:center;gap:8px;background:var(--vio-p);border:1px solid var(--vio-b);border-radius:100px;padding:6px 16px;font-size:11px;font-weight:600;color:var(--vio2);letter-spacing:.04em}
+.cp-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.btn-nav{background:var(--vio);color:#fff;font-size:13px;font-weight:700;padding:9px 22px;border-radius:8px;text-decoration:none;letter-spacing:-.01em;transition:background .2s,transform .2s,box-shadow .2s}
+.btn-nav:hover{background:var(--vio2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(124,58,237,.35)}
+
+/* ═══ HERO — full bleed typographic poster ═══ */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 52px 80px;text-align:center;overflow:hidden;border-bottom:1px solid var(--rl)}
+
+/* violet radial glow */
+.hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:700px;background:radial-gradient(ellipse,rgba(124,58,237,.14) 0%,transparent 65%);pointer-events:none}
+/* lime floor glow */
+.hero::after{content:'';position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:800px;height:300px;background:radial-gradient(ellipse,rgba(200,255,0,.06) 0%,transparent 65%);pointer-events:none}
+
+/* massive "AAA" watermark */
+.hero-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:480px;font-weight:700;letter-spacing:-.06em;color:rgba(124,58,237,.06);line-height:1;user-select:none;pointer-events:none;white-space:nowrap}
+
+.hero-badge{display:inline-flex;align-items:center;gap:10px;background:var(--lime-p);border:1px solid var(--lime-b);border-radius:100px;padding:8px 20px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);margin-bottom:36px;position:relative;z-index:1;opacity:0;animation:up .5s .1s forwards}
+.hb-dot{width:7px;height:7px;border-radius:50%;background:var(--lime);animation:blink 1.8s infinite}
+
+/* BIG headline — each line its own block for dramatic sizing */
+.hero-h{position:relative;z-index:1;margin-bottom:36px;opacity:0;animation:up .8s .2s forwards}
+.h-line1{font-size:clamp(52px,7vw,110px);font-weight:700;line-height:.95;letter-spacing:-.04em;color:var(--wh);display:block}
+.h-line2{font-size:clamp(52px,7vw,110px);font-weight:700;line-height:.95;letter-spacing:-.04em;color:var(--vio2);display:block;font-style:italic}
+.h-line3{font-size:clamp(48px,6.5vw,100px);font-weight:300;line-height:.95;letter-spacing:-.03em;color:rgba(240,237,248,.35);display:block}
+
+.hero-sub{font-size:18px;font-weight:400;color:var(--tx);line-height:1.78;max-width:640px;margin:0 auto 52px;position:relative;z-index:1;opacity:0;animation:up .7s .35s forwards}
+.hero-sub strong{color:var(--wh);font-weight:600}
+
+/* spot tracker — the main CTA block */
+.spot-block{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:20px;opacity:0;animation:up .7s .5s forwards}
+.spot-counter{background:var(--sf);border:1px solid var(--rl);border-radius:12px;padding:20px 36px;display:flex;align-items:center;gap:28px;margin-bottom:4px}
+.sc-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sc-val{font-size:36px;font-weight:700;line-height:1;letter-spacing:-.03em}
+.sc-val.lime{color:var(--lime)}
+.sc-val.muted{color:var(--mu)}
+.sc-lbl{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--tx)}
+.sc-div{width:1px;height:44px;background:var(--rl)}
+/* progress bar */
+.spot-bar-wrap{width:280px}
+.spot-bar-lbl{display:flex;justify-content:space-between;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tx);margin-bottom:6px}
+.spot-bar-lbl span{color:var(--lime)}
+.spot-bar{height:5px;background:var(--rl);border-radius:3px;overflow:hidden}
+.spot-fill{height:100%;width:86%;background:linear-gradient(90deg,var(--vio),var(--lime));border-radius:3px}
+
+.btn-apply{display:inline-flex;align-items:center;gap:12px;background:var(--lime);color:#07050F;font-size:16px;font-weight:700;padding:18px 44px;border-radius:10px;text-decoration:none;letter-spacing:-.01em;transition:transform .2s,box-shadow .2s,opacity .2s}
+.btn-apply:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(200,255,0,.25);opacity:.9}
+.ba-arr{transition:transform .2s}
+.btn-apply:hover .ba-arr{transform:translateX(4px)}
+.apply-note{font-size:12px;font-weight:400;color:var(--tx);letter-spacing:.04em}
+.apply-note span{color:var(--vio2);font-weight:600}
+
+/* proof strip — horizontal ticker */
+.proof-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rl);border-top:1px solid var(--rl);position:relative;z-index:1;opacity:0;animation:fi .7s .85s forwards}
+.ps-item{background:var(--bk);padding:24px 32px;text-align:center}
+.ps-val{font-size:30px;font-weight:700;letter-spacing:-.03em;color:var(--lime);line-height:1;margin-bottom:4px}
+.ps-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mu)}
+
+/* ═══ ROADMAP — vertical timeline, not horizontal cards ═══ */
+.roadmap{background:var(--sf);border-top:1px solid var(--rl);position:relative;z-index:1}
+.rm-top{padding:80px 52px 60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;border-bottom:1px solid var(--rl)}
+.rm-hl{font-size:clamp(40px,5vw,68px);font-weight:700;line-height:1.05;letter-spacing:-.04em}
+.rm-hl em{font-style:italic;color:var(--vio2)}
+.rm-desc{font-size:15px;font-weight:400;color:var(--tx);line-height:1.82;max-width:400px}
+.rm-desc strong{color:var(--wh);font-weight:600}
+
+/* TWO column vertical timeline */
+.rm-body{padding:60px 52px;display:grid;grid-template-columns:1fr 1fr;gap:60px}
+.rm-col-lbl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:28px;padding-bottom:14px;border-bottom:1px solid var(--rl)}
+
+.tl{display:flex;flex-direction:column;position:relative}
+.tl::before{content:'';position:absolute;left:16px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--vio),var(--mu));opacity:.3}
+.tl-item{display:flex;gap:20px;padding:0 0 32px}
+.tl-item:last-child{padding-bottom:0}
+.tl-node{width:32px;height:32px;border-radius:50%;border:1px solid var(--vio-b);background:var(--vio-p);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;font-size:12px;font-weight:700;color:var(--vio2);transition:background .2s,border-color .2s}
+.tl-node.done{background:var(--vio);border-color:var(--vio);color:#fff}
+.tl-node.lime{background:var(--lime-p);border-color:var(--lime-b);color:var(--lime)}
+.tl-c{flex:1;padding-top:4px}
+.tl-week{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:4px}
+.tl-name{font-size:16px;font-weight:700;color:var(--wh);margin-bottom:6px;letter-spacing:-.02em;line-height:1.3}
+.tl-desc{font-size:13px;font-weight:400;color:var(--tx);line-height:1.65}
+.tl-tag{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:100px}
+.tl-tag.v{background:var(--vio-p);color:var(--vio2);border:1px solid var(--vio-b)}
+.tl-tag.l{background:var(--lime-p);color:var(--lime);border:1px solid var(--lime-b)}
+
+/* ═══ CLIFFHANGER ═══ */
+.cliff{padding:110px 52px;background:var(--bk);border-top:1px solid var(--rl);position:relative;overflow:hidden;z-index:1}
+.cliff::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1000px;height:600px;background:radial-gradient(ellipse,rgba(124,58,237,.1) 0%,transparent 60%);pointer-events:none}
+.cliff-in{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+
+/* left: stacked bold statement */
+.cliff-l .cl-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--vio2);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.cl-eyebrow::before{content:'';width:24px;height:1px;background:var(--vio2)}
+h2.cliff-hl{font-size:clamp(44px,5.5vw,80px);font-weight:700;line-height:1.02;letter-spacing:-.04em;margin-bottom:28px}
+h2.cliff-hl em{font-style:italic;color:var(--vio2)}
+h2.cliff-hl .lime{color:var(--lime)}
+.cliff-body{font-size:15px;font-weight:400;color:var(--tx);line-height:1.82;margin-bottom:36px;max-width:440px}
+.cliff-body strong{color:var(--wh);font-weight:600}
+.cliff-note{font-size:12px;font-weight:400;color:var(--mu);letter-spacing:.04em;margin-top:12px}
+.cliff-note span{color:var(--lime)}
+
+/* right: locked portal card */
+.portal-wrap{position:relative}
+.portal-lbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:12px}
+.portal{background:var(--sf);border:1px solid var(--rl);border-radius:12px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.portal-head{background:var(--s2);border-bottom:1px solid var(--rl);padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+.ph-left{display:flex;align-items:center;gap:10px}
+.ph-icon{width:32px;height:32px;background:var(--vio);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;letter-spacing:-.02em}
+.ph-title{font-size:14px;font-weight:700;color:var(--wh);letter-spacing:-.02em}
+.ph-sub{font-size:11px;font-weight:400;color:var(--tx)}
+.ph-badge{font-size:10px;font-weight:700;color:var(--lime);background:var(--lime-p);border:1px solid var(--lime-b);padding:4px 12px;border-radius:100px;letter-spacing:.08em;text-transform:uppercase}
+
+/* tiers inside portal — blurred */
+.portal-tiers{display:flex;flex-direction:column;gap:1px;background:var(--rl);filter:blur(5px);opacity:.18;user-select:none;pointer-events:none}
+.pt{background:var(--sf);padding:18px 24px;display:flex;align-items:center;gap:14px}
+.pt-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.pt-icon.v{background:var(--vio-p);border:1px solid var(--vio-b)}
+.pt-icon.l{background:var(--lime-p);border:1px solid var(--lime-b)}
+.pt-c{flex:1}
+.pt-name{font-size:14px;font-weight:700;color:var(--wh);margin-bottom:2px;letter-spacing:-.01em}
+.pt-desc{font-size:11px;font-weight:400;color:var(--tx);letter-spacing:.02em}
+.pt-tag{font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;white-space:nowrap}
+.pt-tag.v{background:var(--vio-p);color:var(--vio2);border:1px solid var(--vio-b)}
+.pt-tag.l{background:var(--lime-p);color:var(--lime);border:1px solid var(--lime-b)}
+
+.portal-ov{position:absolute;inset:0;top:68px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;background:rgba(7,5,15,.82);backdrop-filter:blur(4px)}
+.lock-i{font-size:28px}
+.lock-l{font-size:22px;font-weight:700;color:var(--wh);letter-spacing:-.02em}
+.lock-l span{color:var(--lime)}
+.lock-s{font-size:12px;font-weight:400;color:var(--tx);letter-spacing:.04em}
+.lock-btn{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:#07050F;font-size:13px;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;margin-top:4px;transition:opacity .2s,transform .2s}
+.lock-btn:hover{opacity:.88;transform:translateY(-1px)}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.rev{opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .65s ease}
+.rev.on{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+</style></head><body>
+
+<div class="ts">
+  <span class="ts-t">&#9889; Cohort Now Open</span>
+  <span class="ts-sep">&#9670;</span>
+  <span class="ts-t">1,500+ AI Agency Founders &middot; 280K+ Community &middot; $7M+ Revenue</span>
+  <span class="ts-sep">&#9670;</span>
+  <span class="ts-t">Limited Spots Remaining</span>
+</div>
+
+<nav>
+  <div class="logo"><span>AAA</span> Accelerator</div>
+  <div class="nav-c">
+    <div class="cohort-pill"><div class="cp-dot"></div>Cohort Open</div>
+    <a href="#" class="btn-nav">Apply Now &rarr;</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-wm">AAA</div>
+
+  <div class="hero-badge"><div class="hb-dot"></div>Liam Ottley &mdash; AAA Accelerator &mdash; 6-Month Program</div>
+
+  <div class="hero-h">
+    <span class="h-line1">Build an AI Agency</span>
+    <span class="h-line2">That Prints</span>
+    <span class="h-line3">While You Sleep.</span>
+  </div>
+
+  <p class="hero-sub">The AAA Accelerator gives you the <strong>exact system to launch, grow, and scale an AI automation agency</strong> &mdash; with Liam Ottley's proven framework, unlimited 1-on-1 coaching, and a community of 280K+ builders behind you.</p>
+
+  <div class="spot-block">
+    <div class="spot-counter">
+      <div class="sc-item">
+        <div class="sc-val lime">7</div>
+        <div class="sc-lbl">Spots Left</div>
+      </div>
+      <div class="sc-div"></div>
+      <div class="sc-item">
+        <div class="sc-val muted">50</div>
+        <div class="sc-lbl">Per Cohort</div>
+      </div>
+      <div class="sc-div"></div>
+      <div class="sc-item">
+        <div class="sc-val" style="color:var(--vio2);font-size:28px">6</div>
+        <div class="sc-lbl">Month Program</div>
+      </div>
+    </div>
+    <div class="spot-bar-wrap">
+      <div class="spot-bar-lbl"><span>86% filled</span><span style="color:var(--tx)">7 remaining</span></div>
+      <div class="spot-bar"><div class="spot-fill"></div></div>
+    </div>
+    <a href="#" class="btn-apply">Apply to the Accelerator <span class="ba-arr">&rarr;</span></a>
+    <div class="apply-note">Application required &middot; <span>Alignment call included</span> &middot; Next cohort starts soon</div>
+  </div>
+
+  <div class="proof-strip">
+    <div class="ps-item"><div class="ps-val">713K</div><div class="ps-lbl">YouTube Subscribers</div></div>
+    <div class="ps-item"><div class="ps-val">280K+</div><div class="ps-lbl">Skool Community</div></div>
+    <div class="ps-item"><div class="ps-val">$7M+</div><div class="ps-lbl">Annual Revenue</div></div>
+    <div class="ps-item"><div class="ps-val">1,500+</div><div class="ps-lbl">Accelerator Students</div></div>
+  </div>
+</section>
+
+<!-- ROADMAP — vertical dual-column timeline -->
+<section class="roadmap">
+  <div class="rm-top rev">
+    <h2 class="rm-hl">From zero to<br>running AI agency<br>&mdash; in <em>6 months.</em></h2>
+    <p class="rm-desc">AI automation is <strong>the biggest business opportunity of the decade</strong> &mdash; and the window to get in early is closing fast. This is the roadmap Liam built after generating $7M+ and training 1,500+ agency founders. Every week has a job. Every month has a milestone.</p>
+  </div>
+  <div class="rm-body">
+    <!-- left: build -->
+    <div>
+      <div class="rm-col-lbl rev">&#9997; Phase 1 &mdash; Build Your Agency</div>
+      <div class="tl">
+        <div class="tl-item rev">
+          <div class="tl-node done">1</div>
+          <div class="tl-c">
+            <div class="tl-week">Weeks 1&ndash;2</div>
+            <div class="tl-name">Choose Your AI Service Stack</div>
+            <p class="tl-desc">Pick the automation services you'll offer &mdash; chatbots, workflow automation, AI voice agents, data pipelines. Liam walks you through what's selling now vs. what's saturated.</p>
+            <span class="tl-tag v">Tech Setup</span>
+          </div>
+        </div>
+        <div class="tl-item rev d1">
+          <div class="tl-node done">2</div>
+          <div class="tl-c">
+            <div class="tl-week">Weeks 3&ndash;4</div>
+            <div class="tl-name">Build Your First AI Product</div>
+            <p class="tl-desc">Unlimited 1-on-1 calls with expert developers. Build a working AI solution you can sell &mdash; no technical background required, just the framework and the support.</p>
+            <span class="tl-tag v">Product</span>
+          </div>
+        </div>
+        <div class="tl-item rev d2">
+          <div class="tl-node">3</div>
+          <div class="tl-c">
+            <div class="tl-week">Weeks 5&ndash;8</div>
+            <div class="tl-name">Personal Brand &amp; Outreach System</div>
+            <p class="tl-desc">Branding coaches help you build authority. Outreach coaches give you the cold email and DM campaigns that consistently fill your pipeline with qualified prospects.</p>
+            <span class="tl-tag v">Pipeline</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- right: sell & scale -->
+    <div>
+      <div class="rm-col-lbl rev d1">&#128200; Phase 2 &mdash; Sell &amp; Scale</div>
+      <div class="tl">
+        <div class="tl-item rev">
+          <div class="tl-node">4</div>
+          <div class="tl-c">
+            <div class="tl-week">Weeks 9&ndash;12</div>
+            <div class="tl-name">Close Your First Client</div>
+            <p class="tl-desc">Sales coaches with veteran closing experience walk you through every deal. Students have signed $3K clients in 3 weeks and $26K contracts within their first month of outreach.</p>
+            <span class="tl-tag l">First Revenue</span>
+          </div>
+        </div>
+        <div class="tl-item rev d1">
+          <div class="tl-node">5</div>
+          <div class="tl-c">
+            <div class="tl-week">Weeks 13&ndash;20</div>
+            <div class="tl-name">Build Recurring Revenue</div>
+            <p class="tl-desc">Retainers, maintenance contracts, and upsells that compound monthly. The real goal isn't a one-time deal &mdash; it's a business that generates while you sleep.</p>
+            <span class="tl-tag l">MRR</span>
+          </div>
+        </div>
+        <div class="tl-item rev d2">
+          <div class="tl-node lime">6</div>
+          <div class="tl-c">
+            <div class="tl-week">Week 24+</div>
+            <div class="tl-name">Fully Operational AI Agency</div>
+            <p class="tl-desc">Systems, team, clients, recurring revenue. You're no longer learning &mdash; you're running. Weekly live calls with Liam keep the growth compounding from here.</p>
+            <span class="tl-tag l">Agency Live</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIFFHANGER -->
+<section class="cliff">
+  <div class="cliff-in">
+    <div class="cliff-l rev">
+      <div class="cl-eyebrow">Inside the Accelerator</div>
+      <h2 class="cliff-hl">The window<br>is open.<br><span class="lime">Get in now.</span></h2>
+      <p class="cliff-body"><strong>The AI gold rush is real &mdash; and early movers win.</strong> Liam Ottley built AAA Accelerator for entrepreneurs who want to capitalise on this opportunity now, with a clear roadmap from zero to a fully operational AI agency generating real recurring revenue. Not someday. This cohort.</p>
+      <a href="#" class="btn-apply" style="font-size:15px;padding:16px 36px">Apply to the Accelerator &rarr;</a>
+      <div class="cliff-note" style="margin-top:14px">6-month program &middot; <span>Application required</span> &middot; Limited cohort spots</div>
+    </div>
+
+    <div class="portal-wrap rev d2">
+      <div class="portal-lbl">// accelerator portal &mdash; access restricted</div>
+      <div class="portal">
+        <div class="portal-head">
+          <div class="ph-left">
+            <div class="ph-icon">A³</div>
+            <div>
+              <div class="ph-title">AAA Accelerator Portal</div>
+              <div class="ph-sub">Members only &mdash; enrollment required</div>
+            </div>
+          </div>
+          <div class="ph-badge">Apply to Access</div>
+        </div>
+        <div class="portal-tiers">
+          <div class="pt"><div class="pt-icon v">&#128187;</div><div class="pt-c"><div class="pt-name">Technical Training &amp; Tool Library</div><div class="pt-desc">Make, n8n, Voiceflow, OpenAI &middot; full dev curriculum</div></div><div class="pt-tag v">60+ Hours</div></div>
+          <div class="pt"><div class="pt-icon v">&#128222;</div><div class="pt-c"><div class="pt-name">Unlimited 1-on-1 Dev Coaching Calls</div><div class="pt-desc">Book directly with expert AI developers &middot; no limits</div></div><div class="pt-tag v">Unlimited</div></div>
+          <div class="pt"><div class="pt-icon v">&#129351;</div><div class="pt-c"><div class="pt-name">Weekly Live Q&amp;A with Liam Ottley</div><div class="pt-desc">Ask Liam directly &middot; strategy &middot; deals &middot; scaling</div></div><div class="pt-tag v">Weekly</div></div>
+          <div class="pt"><div class="pt-icon l">&#128200;</div><div class="pt-c"><div class="pt-name">Sales &amp; Outreach Coaching System</div><div class="pt-desc">Cold email &middot; DMs &middot; closing frameworks &middot; veteran coaches</div></div><div class="pt-tag l">Included</div></div>
+          <div class="pt"><div class="pt-icon l">&#127758;</div><div class="pt-c"><div class="pt-name">280K+ Community &amp; Network</div><div class="pt-desc">Agency owners &middot; developers &middot; referrals &middot; deals</div></div><div class="pt-tag l">Active</div></div>
+        </div>
+        <div class="portal-ov">
+          <div class="lock-i">&#128274;</div>
+          <div class="lock-l">Apply to <span>Unlock</span></div>
+          <div class="lock-s">Limited cohort spots &mdash; alignment call required</div>
+          <a href="#" class="lock-btn">Apply Now &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const els=document.querySelectorAll('.rev');
+const io=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('on')),{threshold:.08});
+els.forEach(el=>io.observe(el));
+</script>
+</body></html>
